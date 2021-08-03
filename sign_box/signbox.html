@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>사인 박스</title>
+<link rel="stylesheet" type="text/css" href="./css/signbox.css">
+</head>
+<body>
+	
+<!-- 서명 하기  -->
+<div class="signbox">
+	<h1>서명하기</h1>
+	<div class="signature_wrap">
+		<div class="signature_box">
+			<canvas id="canvas" width="315" height="245">
+			</canvas>
+		</div>
+		<button type="button" class="btn_refresh">다시쓰기</button>
+	</div>
+</div>
+<button type="button" class="btn_save">저장</button>
+<div class="img"></div>
+
+<script src="./js/jquery.min.js"></script>
+<script>
+
+var pos = {
+	drawable: false,
+	X: -1,
+	Y: -1
+};
+var canvas, ctx;
+ 
+window.onload = function(){
+	canvas = document.getElementById("canvas");
+	ctx = canvas.getContext("2d");
+	ctx.lineWidth = 2;
+
+	canvas.addEventListener("mousedown", listener);
+	canvas.addEventListener("mousemove", listener);
+	canvas.addEventListener("mouseup", listener);
+	canvas.addEventListener("mouseout", listener);
+}
+ 
+function listener(event){
+	switch(event.type){
+		case "mousedown":
+			initDraw(event);
+			break;
+
+		case "mousemove":
+			if (pos.drawable) {
+				draw(event);
+			}
+			break;
+
+		case "mouseout":
+		case "mouseup":
+			finishDraw();
+			break;
+	}
+}
+function initDraw(event){
+	ctx.beginPath();
+	pos.drawable = true;
+	var coors = getPosition(event);
+	pos.X = coors.X;
+	pos.Y = coors.Y;
+	ctx.moveTo(pos.X, pos.Y);
+}
+ 
+function draw(event){
+	var coors = getPosition(event);
+	ctx.lineTo(coors.X, coors.Y);
+	ctx.stroke();
+	pos.X = coors.X;
+	pos.Y = coors.Y;
+}
+ 
+function finishDraw(){
+	pos.drawable = false;
+	pos.X = -1;
+	pos.Y = -1;
+}
+ 
+function getPosition(event){
+	var x = event.pageX - 20;
+	var y = event.pageY - 50;
+	return {X: x, Y: y};
+}
+
+$('.btn_refresh').on('click', function(){
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
+
+$('.btn_save').on('click', function(){
+	var dataURL = canvas.toDataURL();
+	$('.img').html("")
+	.append("<img src='" + dataURL + "' alt=''>")
+});
+</script>
+</body>
+</html>

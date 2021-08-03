@@ -1,0 +1,22 @@
+@charset "utf-8";
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,textarea,p,blockquote,th,td,input,select,textarea,button{margin:0;padding:0}
+fieldset,img{border:0 none}
+dl,ul,ol,li{list-style:none}
+blockquote,q{quotes:none}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}
+input,select,textarea,button{vertical-align:middle}
+button{border:0 none;background-color:transparent;cursor:pointer}
+body{background:#fff}
+body,th,td,input,select,textarea,button{font-size:12px;line-height:1.5;font-family:Helvetica,AppleGothic,sans-serif;color:#000}
+a{color:#000;text-decoration:none}
+a:active,a:hover{text-decoration:underline}
+address,caption,cite,code,dfn,em,var{font-style:normal;font-weight:normal}
+
+.signbox{width:355px;overflow:hidden;background:#e3ded8}
+.signbox h1{font-size:20px;text-align:center;padding:10px}
+.signbox .signature_wrap{position:relative;padding:0 20px 50px}
+.signbox .signature_wrap .signature_box{position:relative;width:315px;height:245px;overflow:hidden;background:#fff}
+.signbox .signature_wrap .btn_refresh{position:absolute;bottom:10px;right:20px;width:102px;height:30px;overflow:hidden;text-indent:-999px;background:url("../images/btn_refresh.png");}
+.btn_save{width:355px;font-size:14px;font-weight:700;line-height:30px;border-radius:4px;background:#ddd;margin-top:20px}
+.img{margin-top:30px}
