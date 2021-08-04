@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>카운터 샘플</title>
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+
+<style>
+  .graph_modules .module{ text-align: center; }
+  .graph_modules .module .module_inner { display: inline-block; vertical-align: top; }
+  .graph_modules .module .module_inner .count_total { color: #00358e; font-size: 24px; font-weight: 700; line-height: 55px; }
+  .graph_modules .module .module_inner .graph_wrap { display: inline-block; vertical-align: top; padding-top: 7px; }
+  .graph_modules .module .module_inner .graph_wrap .graph_item { position: relative; font-size: 0; text-align: left; white-space: nowrap; }
+  .graph_modules .module .module_inner .graph_wrap .graph_item .name { position: absolute; right: 100%; line-height: 40px; font-size: 16px; font-weight: 700; margin-right: 18px; vertical-align: top; }
+  .graph_modules .module .module_inner .graph_wrap .graph_item .graph { height: 40px; font-size: 16px; vertical-align: top; }
+  .graph_modules .module .module_inner .graph_wrap .graph_item .graph .bar { position: relative; height: 40px; overflow: visible !important; }
+  .graph_modules .module .module_inner .graph_wrap .graph_item .graph .bar .count { position: absolute; top: 0; left: 100%; font-weight: 700; line-height: 40px; padding-left: 10px; z-index: 1; background: #fff; }
+  .graph_modules .module .module_inner .graph_wrap .graph_item.g_color_1 { color: #00358e; }
+  .graph_modules .module .module_inner .graph_wrap .graph_item.g_color_1 .bar { background: #00358e; }
+  .graph_modules .module .module_inner .graph_wrap .graph_item.g_color_2 { color: #5173ae; }
+  .graph_modules .module .module_inner .graph_wrap .graph_item.g_color_2 .bar { background: #cce0ff; }
+  .graph_modules .module .module_inner .graph_wrap .graph_item ~ .graph_item { margin-top: 10px; }
+  
+  .graph_modules .module .module_inner .pie_graph_wrap { display: inline-block; vertical-align: top;}
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item { position: relative; width: 150px; height: 150px; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph { position: relative; width: 100%; height: 100%; overflow: hidden; z-index: 2; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph:before { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url("./images/bg_pie_graph_mask.png") no-repeat; content: ''; z-index: 1; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph:after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: #cce0ff; z-index: -1; content: ''; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph canvas { display: block; width: 100%; height: 100%; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph_label { position: absolute; top: 50%; left: 50%; width: 74px; height: 74px; border-radius: 50%; background: #fff; margin: -37px 0 0 -37px; z-index: 3; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph_label .name { display: block; font-size: 12px; font-weight: 700; line-height: 20px; padding-top: 11px; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph_label .count { font-size: 12px; font-weight: 700; line-height: 24px; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph_label .count span { font-size: 16px; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph_info { position: absolute; top: 5px; color: #00358e; font-size: 16px; font-weight: 700; line-height: 21px; white-space: nowrap; z-index: 5; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph_info i { position: absolute; top: 100%; height: 15px; border: solid #00358e; margin-top: 7px; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph_info i:before { position: absolute; top: -2px; width: 3px; height: 3px; border-radius: 50%; background: #00358e; content: ''; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph_info.text_1 { right: 100%; margin-right: 24px; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph_info.text_1 i { left: 50%; width: 60px; border-width: 0 0 1px 1px; }
+  .graph_modules .module .module_inner .pie_graph_wrap .graph_item .graph_info.text_1 i:before { left: -2px; }
+
+  .count_module:after { clear: both; display: table; content: ''; }
+  .count_module .module { text-align: center; }
+  .count_module .module ul { display: inline-block; font-size: 0; vertical-align: top; }
+  .count_module .module ul li { display: inline-block; vertical-align: top; }
+  .count_module .module { padding: 75px 0 96px; }
+  .count_module .module ul li { margin-left: -24px; }
+  .count_module .module ul li .count_item { width: 240px; padding-top: 52px; -webkit-box-sizing: border-box; box-sizing: border-box; }
+  .count_module .module ul li .count_item .name { display: block; color: #00358e; font-size: 25px; font-weight: 700; line-height: 20px; }
+  .count_module .module ul li .count_item .count { display: block; font-size: 20px; font-weight: 700; line-height: 50px; margin-top: 15px; }
+  .count_module .module ul li .count_item .count .num { font-size: 36px; font-weight: 700; vertical-align: -2px; }
+  .count_module .module ul li:first-child { margin: 0; }
+</style>
+
+</head>
+<body>
+
+<div class="graph_modules module_1">
+  <div class="module">
+    <div class="module_inner">
+      <div class="count_total">총 5,555명</div>
+      <div class="graph_wrap">
+        <div class="graph_item g_color_1">
+          <strong class="name">A타입</strong>
+          <div class="graph" style="width:291px; min-width:146px;"><!-- 그래프 최대 크기 직접 입력/ 모바일에서 사용할 최소 크기 입력 -->
+            <div class="bar" style="width: 0%;">
+              <span class="count" data-max-count="3333"><span>0</span>명</span>
+            </div>
+          </div>
+        </div>
+        <div class="graph_item g_color_2">
+          <strong class="name">B타입</strong>
+          <div class="graph" style="width:197px; min-width:99px;"><!-- 그래프 최대 크기 직접 입력/ 모바일에서 사용할 최소 크기 입력 -->
+            <div class="bar" style="width: 0%;">
+              <span class="count" data-max-count="2222"><span>0</span>명</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="graph_modules module_2" style="margin-top: 100px;">
+  <div class="module">
+    <div class="module_inner">
+      <div class="pie_graph_wrap">
+        <div class="graph_item">
+          <div class="graph">
+            <canvas id="pieGraph"></canvas>
+          </div>
+          <div class="graph_label">
+            <strong class="name">퍼센트</strong>
+            <span class="count" data-max-count="93.5">
+              <span>0</span>%
+            </span>
+          </div>
+          <div class="graph_info text_1" style="display: none;">
+            데이터 1
+            <i></i>
+          </div>
+          <div class="graph_info text_2" style="display: none;">
+            데이터 2
+            <i></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="count_module">
+  <div class="module">
+    <ul>
+      <li>
+        <div class="count_item">
+          <strong class="name">정보 1</strong>
+          <span class="count">
+            <span class="num" data-max-count="1285">0</span>명
+          </span>
+        </div>
+      </li>
+      <li>
+        <div class="count_item">
+          <strong class="name">정보 2</strong>
+          <span class="count">
+            <span class="num" data-max-count="2171">0</span>명
+          </span>
+        </div>
+      </li>
+      <li>
+        <div class="count_item">
+          <strong class="name">정보 3</strong>
+          <span class="count">
+            <span class="num" data-max-count="38">0</span>명
+          </span>
+        </div>
+      </li>
+      <li>
+        <div class="count_item">
+          <strong class="name">정보 4</strong>
+          <span class="count">
+            <span class="num" data-max-count="532">0</span>명
+          </span>
+        </div>
+      </li>
+      <li>
+        <div class="count_item">
+          <strong class="name">정보 5</strong>
+          <span class="count">
+            <span class="num" data-max-count="99916">0</span>명
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script src="./js/jquery.min.js"></script>
+<script>
+  // 막대 그래프 카운터
+  (function(){
+    var $graphModule = $('.graph_modules.module_1 .module'),
+    DELAY = 1000;
+
+    var countGraph = function ($graph) {
+      var $thisBar = $graph.find('.bar'),
+      $thisCount = $thisBar.find('.count');
+      $thisBar.delay(DELAY).animate({
+        'width': '100%'
+      }, {
+        duration: 2000,
+        step: function(now){
+          var maxNum = parseInt($thisCount.attr('data-max-count')),
+          resultNum = parseInt((maxNum * now)/100);
+          $thisCount.find('span').html(resultNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        }
+      });
+    };
+
+    var setGraph = function($target){
+      for (var i = 0; i<$target.length; i++) {
+        countGraph($target.eq(i));
+      }
+    };
+
+    setTimeout(function(){
+      setGraph($graphModule.eq(0).find('.graph_item'));
+    }, 0);
+    setTimeout(function(){
+      setGraph($graphModule.eq(1).find('.graph_item'));
+    }, DELAY);
+  })();
+  
+  // 원 그래프 카운터
+  (function(){
+    var $graphModule = $('.graph_modules.module_2 .module'),
+    DELAY = 1000,
+    ctx = "";
+
+    var pieGraph = function ($graph) {
+      var canvas = document.getElementById("pieGraph");
+      canvas.width = 150;
+      canvas.height = 150;
+      ctx = canvas.getContext("2d");
+      ctx.fillStyle = '#00358e';
+      ctx.beginPath();
+      ctx.moveTo(75, 75);
+      
+      var $thisCount = $graph.find('.count'),
+      maxNum = parseFloat($thisCount.attr('data-max-count')),
+      maxAngle = 360 * (maxNum/100);
+
+      var startAngle = Math.PI * 1.5,
+      EndAngle = startAngle + 0;
+
+      $({val: 0}).delay(DELAY).animate({
+        val: maxAngle
+      }, {
+        duration: 2000,
+        step: function(now){
+          EndAngle = startAngle + (Math.PI * (now/180));
+          ctx.arc(75, 75, 75, startAngle, EndAngle);
+          ctx.closePath();
+          ctx.fill();
+          
+          $thisCount.find('span').html((now*100/360).toFixed(1));
+        },
+        complete: function(){
+          $thisCount.find('span').html(maxNum);
+          setTimeout(function(){
+            $('.graph_info.text_1').fadeIn(500);
+          }, 500);
+        }
+      });
+    };
+    
+    setTimeout(function(){
+      pieGraph($graphModule.eq(0).find('.graph_item'));
+    }, DELAY*2);
+  })();
+  
+  (function(){
+    var $counthModule = $('.count_module .count_item'),
+    DELAY = 1000;
+
+    var countNumber = function ($count) {
+      var $thisCount = $count.find('.count'),
+      $thisNum = $thisCount.find('.num'),
+      maxNum = parseInt($thisNum.attr('data-max-count'));
+      $({val: 0}).delay(DELAY).animate({
+        val: maxNum
+      }, {
+        duration: 1000,
+        step: function(now){
+          $thisNum.html(parseInt(this.val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        },
+        complete: function(){
+          $thisNum.html(maxNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        }
+      });
+    };
+
+    var setCount = function($target){
+      countNumber($target);
+    };
+
+    setTimeout(function(){
+      setCount($counthModule.eq(0));
+    }, DELAY * 4);
+    setTimeout(function(){
+      setCount($counthModule.eq(1));
+    }, DELAY * 5);
+    setTimeout(function(){
+      setCount($counthModule.eq(2));
+    }, DELAY * 6);
+    setTimeout(function(){
+      setCount($counthModule.eq(3));
+    }, DELAY * 7);
+    setTimeout(function(){
+      setCount($counthModule.eq(4));
+    }, DELAY * 8);
+  })();
+</script>
+
+</body>
+</html>
