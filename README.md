@@ -33,3 +33,12 @@ flash를 가지고 이것저것 해보던 생각이 나서 js로 만들어봄.
 충돌각이나 튕겨나가는 계산법은 다른 블로그에 올라와 있던 것을 참조해서 작성하였음.
 
 <a href="https://catteine.github.io/my-samples/collision_sample/collision.html" target="_blank">바로가기</a>
+
+## Chart.js Sample
+
+실제 작업에 사용했던 Charts.js 샘플.
+
+작업물 중 일부만 옮겨옴.
+
+<a href="https://catteine.github.io/my-samples/chartjs_sample/sample.html" target="_blank">바로가기</a>
+
