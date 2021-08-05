@@ -42,3 +42,14 @@ flash를 가지고 이것저것 해보던 생각이 나서 js로 만들어봄.
 
 <a href="https://catteine.github.io/my-samples/chartjs_sample/sample.html" target="_blank">바로가기</a>
 
+## rad progress sample
+
+원형 프로그레스바 샘플.
+
+canvas를 사용하지 않고, clip을 사용해서 원을 표현.
+
+계산식을 넣어서 프로그레스 기능으로 활용.
+
+프로젝트에 사용하기 전 샘플로 만들었던 것을 옮겨옴.
+
+<a href="https://catteine.github.io/my-samples/rad_graph_sample/sample.html" target="_blank">바로가기</a>
