@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="css/catteine.css">
+</head>
+<body>
+
+<div style="width:700px;padding:100px 0 0;margin:0 auto">
+
+	<canvas style="border:1px solid #000;background:#fff" id="cv"></canvas>
+
+</div>
+
+<script>
+// 전체 충돌 카운트
+var collisionCount = 0;
+// 컨버스 사이즈
+var stageWidth = 700,
+stageHeight = 500;
+
+// 캔버스 init
+var cv = document.getElementById('cv');
+cv.width = stageWidth;
+cv.height = stageHeight;
+ctx = cv.getContext("2d");
+
+function objMove() {
+	// 캔버스 비우기
+	ctx.clearRect(0, 0, cv.width, cv.height);
+	// 캔버스 그리기
+	for(var cnt=0; objArr.length>cnt; cnt++){
+		ctx.beginPath();
+		ctx.fillStyle = objArr[cnt].color;
+		objArr[cnt].c_x = objArr[cnt].c_x + (objArr[cnt].v_x);
+		objArr[cnt].c_y = objArr[cnt].c_y + (objArr[cnt].v_y);
+		ctx.arc(objArr[cnt].c_x,objArr[cnt].c_y,objArr[cnt].c_r,0,2*Math.PI);
+		ctx.closePath();
+		ctx.fill();
+		
+		// 벽 충돌 체크
+		if ( ((objArr[cnt].c_x+objArr[cnt].c_r)>=cv.width) || ((objArr[cnt].c_x-objArr[cnt].c_r)<=0) ) {
+			objArr[cnt].v_x = objArr[cnt].v_x * -1;
+			collisionCount++;
+		}
+		if ( ((objArr[cnt].c_y+objArr[cnt].c_r)>=cv.height) || ((objArr[cnt].c_y-objArr[cnt].c_r)<=0) ) {
+			objArr[cnt].v_y=objArr[cnt].v_y * -1;
+			collisionCount++;
+		}
+		
+		// 서로 충돌 체크
+		for(var ct=0; objArr.length>ct; ct++){
+
+			if(objArr[cnt] != objArr[ct]){
+
+				var m_x = objArr[cnt].c_x - objArr[ct].c_x;
+				var m_y = objArr[cnt].c_y - objArr[ct].c_y;
+				var d_r = objArr[cnt].c_r + objArr[ct].c_r;
+
+				if ( (m_x*m_x)+(m_y*m_y) < (d_r*d_r) ) {
+				
+					var	b1 = objArr[cnt],
+							b2 = objArr[ct];
+
+					var	cl_x = b1.c_x - b2.c_x,
+							cl_y = b1.c_x - b2.c_x;
+
+					var c_ang = Math.atan2(cl_y,cl_x);
+
+					var	spd1 = Math.sqrt((b1.c_x*b1.c_x)+(b1.c_y*b1.c_y)),
+							spd2 = Math.sqrt((b2.c_x*b2.c_x)+(b2.c_y*b2.c_y));
+
+					var	vd1 = Math.atan2(b1.c_y,b1.c_x),
+							vd2 = Math.atan2(b2.c_y,b2.c_x);
+
+					var	vx_1 = spd1*Math.cos(vd1-c_ang),
+							vy_1 = spd1*Math.sin(vd1-c_ang),
+							vx_2 = spd2*Math.cos(vd2-c_ang),
+							vy_2 = spd2*Math.sin(vd2-c_ang);
+					
+					var kx =  Math.cos(c_ang) * vx_1 + Math.cos(c_ang + Math.PI/2) * vy_1,
+							ky = Math.sin(c_ang) * vx_1 + Math.sin(c_ang + Math.PI/2) * vy_1,
+							ix =  Math.cos(c_ang) * vx_2 + Math.cos(c_ang + Math.PI/2) * vy_2,
+							iy = Math.sin(c_ang) * vx_2 + Math.sin(c_ang + Math.PI/2) * vy_2;
+					
+					objArr[cnt].v_x = (objArr[cnt].c_x-ix)/5;
+					objArr[ct].v_x = (objArr[ct].c_x-kx)/5;
+					objArr[cnt].v_y = (objArr[cnt].c_y-iy)/5;
+					objArr[ct].v_y = (objArr[ct].c_y-ky)/5;
+
+					//console.log(objArr[cnt].v_x, objArr[ct].v_x, objArr[cnt].v_y, objArr[ct].v_y);
+				}
+			}
+		}
+	}
+	// 종료 시점
+	if(collisionCount >= 300){
+		console.log("총 충돌 : ", collisionCount);
+		clearInterval(moving);
+	}
+}
+
+// 랜덤 색상 지정
+function get_random_color() {
+	var letters = '0123456789ABCDEF'.split('');
+	var color = '#';
+	for (var i = 0; i < 6; i++ ) {
+		color += letters[Math.round(Math.random() * 15)];
+	}
+	return color;
+}
+
+// 오브젝트
+var obj = function (x,y,r,v_x,v_y,col) {
+	this.c_x = x;
+	this.c_y = y;
+	this.c_r = r;
+	this.v_x = v_x;
+	this.v_y = v_y;
+	this.color = col;
+}
+
+// 오브젝트 옵션
+var objOption = {
+	count: 10,		// 갯수
+	size: 40,		// 사이즈 (지름)
+};
+
+// 오브젝트를 담는 배열
+var objArr = [];
+
+// 오브젝트 생성
+for (var t=0; t<objOption.count; t++) {
+	// 오브젝트 위치 지정
+	var randX = (parseInt(Math.random()*(stageWidth-objOption.size*2)/objOption.size) * objOption.size) + objOption.size + 5,
+	randY = (parseInt(Math.random()*(stageHeight-objOption.size*2)/objOption.size) * objOption.size) + objOption.size + 5;
+	// 움직이는 방향 
+	var vecArr = [5,-5];
+	// 방향 랜덤 결정
+	var randVX = function () {
+		var tt = Math.random();
+		if (tt>=0.5) {
+			return vecArr[0];
+		} else {
+			return vecArr[1];
+		}
+	},
+	randVY = function () {
+		var tt = Math.random();
+		if (tt>=0.5) {
+			return vecArr[0];
+		} else {
+			return vecArr[1];
+		}
+	};
+	// 오브젝트 배열에 넣기
+	objArr.push( new obj(randX, randY, (objOption.size/2), randVX(), randVY(), get_random_color()) );
+}
+
+var moving = setInterval(objMove, 15);
+
+</script>
+</body>
+</html>
