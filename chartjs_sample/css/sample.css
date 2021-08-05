@@ -1,0 +1,25 @@
+﻿@charset "utf-8";
+
+a,abbr,acronym,address,applet,article,aside,audio,b,bdi,bdo,big,blockquote,body,button,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,header,hgroup,h1,h2,h3,h4,h5,h6,html,i,iframe,img,input,ins,kbd,label,legend,li,map,mark,menu,nav,object,ol,p,pre,q,rp,rt,ruby,s,samp,section,select,small,span,strike,strong,summary,sub,sup,table,tbody,td,textarea,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;font-size:100%;border:0;vertical-align:baseline}
+input,select,textarea{color:#000;padding:0;margin:0}
+legend,caption,hr{display:none}
+ol,ul{list-style:none}
+a{text-decoration:none}
+img{vertical-align:top}
+.blind{position:absolute !important;font-size:0 !important;visibility:hidden !important}
+
+.sec_view_count .count_graph_wrap{padding:50px}
+.sec_view_count .count_graph{position:relative}
+.sec_view_count .count_graph:before{position:absolute;bottom:0;left:0;right:0;height:21px;border-top:1px solid #d8d8d8;content:''}
+.sec_view_count .count_graph .graph{position:relative;padding-top:24px;z-index:5}
+.sec_view_count .count_graph canvas{display:block;height:129px;background:transparent}
+.sec_view_count .count_graph .graph_info{width:100%;height:22px;font-size:0;white-space:nowrap;line-height:22px;padding:1px 5px 0;margin-top:-22px;box-sizing:border-box}
+.sec_view_count .count_graph .graph_info .x_line{position:relative;display:inline-block;width:16.66%;height:22px;color:#999;font-size:10px;vertical-align:top}
+.sec_view_count .count_graph .graph_info .x_line .label{position:absolute;top:0;left:-50%;width:100%;text-align:center;z-index:1}
+.sec_view_count .count_graph .graph_info .x_line .count{position:absolute;bottom:23px;left:-50%;width:100%;height:131px;color:#5166a5;font-size:14px;line-height:24px;text-align:center;z-index:1}
+.sec_view_count .count_graph .graph_info .line_selected .label{color:#333}
+.sec_view_count .count_graph .graph_info .line_selected:after{position:absolute;bottom:23px;left:-50%;width:100%;height:131px;background:#4847cd;background:linear-gradient(to bottom, #83befd 0, #b6c3fd 32%, rgba(255, 255, 255, 0.22) 100%);background:-webkit-linear-gradient(top, #83befd 0, #b6c3fd 32%, rgba(255, 255, 255, 0.22) 100%);opacity:0.4;content:''}
+.sec_view_count .graph_noti{margin-top:30px}
+.sec_view_count .graph_noti b{display:inline-block;width:10px;height:2px;margin-right:5px;vertical-align:5px}
+.sec_view_count .graph_noti b.prev{background-color:#d4d6dd}
+.sec_view_count .graph_noti b.now{background-color:#304aa0}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="./css/sample.css" />
+<title>챠트 샘플</title>
+</head>
+<body>
+	
+	<div id="wrap">
+
+		<section class="sec_view_count">
+			<div class="count_graph_wrap">
+				<div class="count_graph">
+					<div class="graph">
+						<canvas id="myChart" height="129"></canvas>
+					</div>
+					<div class="graph_info">
+						<div class="x_line"><!-- line_selected : 오늘 날짜 -->
+							<span class="label">월</span>
+							<span class="count">1</span>
+						</div>
+						<div class="x_line">
+							<span class="label">화</span>
+							<span class="count">7</span>
+						</div>
+						<div class="x_line">
+							<span class="label">수</span>
+							<span class="count">0</span>
+						</div>
+						<div class="x_line">
+							<span class="label">목</span>
+							<span class="count">5</span>
+						</div>
+						<div class="x_line">
+							<span class="label">금</span>
+							<span class="count">10</span>
+						</div>
+						<div class="x_line">
+							<span class="label">토</span>
+							<span class="count"></span>
+						</div>
+						<div class="x_line">
+							<span class="label">일</span>
+							<span class="count"></span>
+						</div>
+					</div>
+				</div>
+				<ul class="graph_noti">
+					<li><b class="prev"></b>이전</li>
+					<li><b class="now"></b>지금</li>
+				</ul>
+			</div>
+		</section>
+
+	</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
+<script>
+
+var keyMax = 30,	// 그래프 Y축 최대값
+todayVal = 5;		// 1~7 : 월~금 기준
+
+/* 요일 지정에 따른 - 그래프 보더/포인트 컬러 지정 */
+var borderColorArray = ['#f2f2f2', '#f2f2f2', '#f2f2f2', '#f2f2f2', '#f2f2f2', '#f2f2f2', '#f2f2f2'];
+borderColorArray[todayVal-1] = '#d3d5d7';
+var pointColorArray = ['#6d39be', '#6d39be', '#6d39be', '#6d39be', '#6d39be', '#6d39be', '#6d39be'];
+pointColorArray[todayVal-1] = '#304aa0';
+/* 요일 지정에 따른 - 그래프 기타 효과 지정 */
+$('.sec_view_count .graph_info .x_line').eq(todayVal-1).addClass('line_selected');
+
+var viewCountArrayLast = [12, 14, 3, 5, 22, 13, 7],
+viewCountArrayThis = [1, 7, 0, 5, 10];
+
+var viewCountArrayLastD = [0, 0, 0, 0, 0, 0, 0],
+viewCountArrayThisD = [0, 0, 0, 0, 0];
+
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type : 'line',
+    data : {
+        labels : ["월", "화", "수", "목", "금", "토", "일"],
+        datasets : [
+			{
+	            data : viewCountArrayThisD,
+	            borderColor : '#304aa0',
+				pointBorderColor : pointColorArray
+        	},
+			{
+	            data : viewCountArrayLastD,
+	            borderColor : '#d4d6dd',
+				pointBorderColor : '#999'
+        	}
+		]
+    },
+    options : {
+		maintainAspectRatio : false,
+		layout : {
+			padding : {
+				top : 6,
+				left : 5,
+				right : 5,
+				bottom : 22
+			}
+		},
+		legend : {
+			display : false
+		},
+		tooltips : {
+			enabled : false
+		},
+		elements : {
+			point : {
+				backgroundColor : '#fff',
+				borderWidth : 2,
+				radius : 3
+			},
+			line : {
+				backgroundColor : 'rgba(255, 255, 255, 0)',
+	            borderWidth: 1.5,
+				tension : 0
+			}
+		},
+        scales : {
+			xAxes : [{
+				gridLines : {
+					drawTicks : false,
+					drawBorder : false,
+					color : borderColorArray
+				},
+				ticks : {
+					display : false
+                }
+			}],
+            yAxes : [{
+				gridLines : {
+					drawTicks : false,
+					color : 'rgba(255,255,255,0)',
+					zeroLineColor : 'rgba(255,255,255,0)'
+				},
+                ticks : {
+					display : false,
+					min : 0,
+					max : keyMax,
+					stepSize : 1,
+                    beginAtZero : true
+                }
+            }]
+        }
+    }
+});
+
+var drawChart = function(){
+	myChart.data.datasets[0].data = viewCountArrayThis;
+	myChart.data.datasets[1].data = viewCountArrayLast;
+	myChart.update();
+};
+
+var that = $('.sec_view_count'),
+thatTimer = 700;
+/* 1-1 : 그래프 그리기 */
+thatTimer = thatTimer + 700;
+setTimeout(function(){
+	drawChart();
+}, thatTimer);
+
+</script>
+</body>
+</html>
