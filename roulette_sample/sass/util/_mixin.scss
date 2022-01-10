@@ -1,0 +1,30 @@
+@mixin clearAfter {
+  &::after {
+    clear: both;
+    display: table;
+    content: '';
+  }
+}
+
+@mixin hiddenText {
+  overflow: hidden;
+  font-size: 1px;
+  text-indent: -9999px;
+}
+
+@mixin bgBlank {
+  background: rgba(0,0,0,0);
+}
+
+@mixin textEllipsis($v: 1) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @if $v > 1 {
+    display: -webkit-box;
+    -webkit-line-clamp: $v; 
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+  } @else {
+    white-space: nowrap;
+  }
+}

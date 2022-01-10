@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>룰렛</title>
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="./css/page.css">
+
+</head>
+<body>
+
+  <section id="wrap">
+    
+    <div id="container">
+
+      <div class="event_roulette_wrap">
+        <div class="inner">
+          <div class="roulette_module">
+            <button type="button" class="btn_start"><img src="./images/btn_go.png" alt="go"></button>
+            <span class="pin"><span class="count"></span></span>
+            <span class="mask"></span>
+            <div class="roulette">
+              <canvas id="canvas" width="554" height="554" style="width:100%;height:100%;">
+                <p>Sorry, your browser doesn't support canvas. Please try another.</p>
+              </canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+<script type="text/javascript" src="./js/Winwheel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+
+<script>
+  const eventRoulette = document.querySelector('.roulette'),
+  rouletteWrap = document.querySelector('.event_roulette_wrap'),
+  btnStart = document.querySelector('.btn_start');
+
+  btnStart.addEventListener('click', () => {
+    btnStart.style.display = "none";
+    rouletteSpin();
+  });
+
+  // 룰렛 배열
+  const segArr = [
+    {'text' : '아이템 1'},
+    {'text' : '아이템 2'},
+    {'text' : '아이템 3'},
+    {'text' : '아이템 4'},
+    {'text' : '아이템 5'},
+    {'text' : '아이템 6'},
+    {'text' : '아이템 7'},
+    {'text' : '아이템 8'},
+  ]
+
+  function rouletteSpin() {
+    startSpin();
+  }
+
+  /* 룰렛 라이브러리 */
+  let theWheel = new Winwheel({
+    'numSegments': segArr.length,
+    'drawMode': 'image',
+    'drawText': true,
+    'segments': segArr,
+    'animation': {
+      'type': 'spinOngoing',
+      'duration': 6,
+      'spins': 8,
+      'callbackSound': tickAct,
+      'soundTrigger': 'pin',
+      'callbackFinished': resultFunc,
+    },
+    'pins': {
+      'number': segArr.length*2,
+      'fillStyle': 'rgba(0,0,0,0)',
+      'strokeStyle': 'rgba(0,0,0,0)'
+    }
+  });
+
+  function tickAct() {
+    document.querySelector('.pin').classList.add('pin_spin');
+    setTimeout(() => {
+      document.querySelector('.pin').classList.remove('pin_spin');
+    },50);
+  }
+
+  let loadedImg = new Image();
+  loadedImg.onload = function() {
+    theWheel.wheelImage = loadedImg; 
+    theWheel.draw();
+  }
+  loadedImg.src = "./images/bg_roulette.png";
+
+  let wheelSpinning = false;
+
+  function startSpin() {
+    if (wheelSpinning == false) {
+      theWheel.animation.spins = 8;
+      theWheel.startAnimation();
+      wheelSpinning = true;
+      setTimeout(() => {
+        theWheel.stopAnimation();
+      }, 4000);
+    }
+  }
+  function resultFunc(indicatedSegment) {
+      alert(indicatedSegment.text);
+  }
+</script>
+</body>
+</html>
