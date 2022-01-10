@@ -62,6 +62,14 @@
     {'text' : '아이템 8'},
   ]
 
+  // 멈추는 지점 세팅
+  // 결과값 1~8
+  let resultSeg = 1;
+  let stopPosition = (() => {
+    return (Math.floor(Math.random() * 35)+11) + ((resultSeg-1) * 45);
+  })();
+
+  // 실행
   function rouletteSpin() {
     startSpin();
   }
@@ -79,6 +87,7 @@
       'callbackSound': tickAct,
       'soundTrigger': 'pin',
       'callbackFinished': resultFunc,
+      'stopAngle': stopPosition,
     },
     'pins': {
       'number': segArr.length*2,
