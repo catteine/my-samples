@@ -9,6 +9,7 @@ https://catteine.github.io/my-samples/
 - [오브젝트 충돌 샘플](#collision-sample)
 - [Chart.js 샘플](#chartjs-sample)
 - [원형 프로그레스바 샘플](#rad-progress-sample)
+- [룰렛 샘플](#roulette-sample)
 
 ---
 
@@ -69,3 +70,20 @@ canvas를 사용하지 않고, clip을 사용해서 원을 표현.
 프로젝트에 사용하기 전 샘플로 만들었던 것을 옮겨옴.
 
 <a href="https://catteine.github.io/my-samples/rad_graph_sample/sample.html" target="_blank">바로가기</a>
+
+---
+
+## Roulette sample
+
+룰렛 샘플.
+
+Winwheel.js 활용 (http://dougtesting.net/home)
+
+타입1 : 지정된 결과를 향해 룰렛이 돌아가다 서서히 멈춤
+
+타입2 : 룰렛은 계속 돌아가며, 일정 시간 후 결과값을 내보냄
+
+처음에 css3로 간단히 룰렛을 제작하였다가, 이런 저런 기능이 필요해서 찾아본 라이브러리를 활용.
+
+<a href="https://catteine.github.io/my-samples/roulette_sample/index.html" target="_blank">타입1 바로가기</a>
+<a href="https://catteine.github.io/my-samples/roulette_sample/index_2.html" target="_blank">타입2 바로가기</a>
